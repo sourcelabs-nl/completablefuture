@@ -1,0 +1,13 @@
+version: "2.4"
+services:
+  mockServer:
+    image: mockserver/mockserver:mockserver-5.11.0
+    ports:
+      - 1080:1080
+    environment:
+      MOCKSERVER_INITIALIZATION_JSON_PATH: /config/cfdata.json
+      MOCKSERVER_WATCH_INITIALIZATION_JSON: "true"
+    volumes:
+      - type: bind
+        source: .
+        target: /config

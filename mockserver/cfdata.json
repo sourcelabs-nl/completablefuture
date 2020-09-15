@@ -1,0 +1,164 @@
+[
+  {
+    "priority":1,
+    "id": "load_list_of_products",
+    "httpRequest": {
+      "path": "/products",
+      "method": "GET"
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "headers": {"Content-Type": ["application/json; charset=utf-8"]},
+      "body": {
+            "products": [
+              {
+                "id": "1",
+                "title": "Product 1"
+              },
+              {
+                "id": "2",
+                "title": "Product 2"
+              },
+              {
+                "id": "3",
+                "title": "Product 3"
+              },
+              {
+                "id": "4",
+                "title": "Product 4"
+              },
+              {
+                "id": "5",
+                "title": "Product 5"
+              },
+              {
+                "id": "6",
+                "title": "Product 6"
+              },
+              {
+                "id": "7",
+                "title": "Product 7"
+              },
+              {
+                "id": "8",
+                "title": "Product 8"
+              },
+              {
+                "id": "9",
+                "title": "Product 9"
+              },
+              {
+                "id": "10",
+                "title": "Product 10"
+              }
+            ]
+          }
+    }
+  },
+  {
+    "priority":1,
+    "httpRequest": {
+      "path": "/prices",
+      "queryStringParameters": {
+            "productId": ["5"]
+        },
+      "method": "GET"
+    },
+    "httpResponse": {
+      "statusCode": 503,
+      "delay": {"timeUnit": "MILLISECONDS", "value": 100}
+    }
+  },
+  {
+    "priority":1,
+    "httpRequest": {
+      "path": "/warehouses",
+      "queryStringParameters": {
+            "productId": ["7"]
+        },
+      "method": "GET"
+
+    },
+    "httpResponse": {
+      "statusCode":500,
+      "delay": {"timeUnit": "MILLISECONDS", "value": 100}
+    }
+  },
+  {
+    "priority":1,
+    "httpRequest": {
+      "path": "/locations",
+      "queryStringParameters": {
+            "productId": ["8"],
+            "locationId": ["888"]
+        },
+      "method": "GET"
+    },
+    "httpResponse": {
+      "statusCode":503,
+      "delay": {"timeUnit": "MILLISECONDS", "value": 100}
+    }
+  },
+  {
+    "priority":1,
+      "httpRequest": {
+        "path": "/reviews",
+        "queryStringParameters": {
+              "productId": ["3"]
+          },
+        "method": "GET"
+      },
+      "httpResponse": {
+        "statusCode":404,
+        "delay": {"timeUnit": "MILLISECONDS", "value": 100}
+      }
+  },
+  {
+    "priority":0,
+    "httpRequest": {
+      "path": "/prices",
+      "method": "GET"
+    },
+    "httpResponseTemplate": {
+      "template": "return { statusCode: 200, headers: { 'Content-Type': [\"application/json; charset=utf-8\"] }, body: JSON.stringify({price: request.queryStringParameters['productId'][0] + \".00\", currency: \"EUR\" }) };",
+      "templateType": "JAVASCRIPT",
+      "delay": {"timeUnit": "MILLISECONDS", "value": 60}
+    }
+  },
+  {
+    "priority":0,
+    "httpRequest": {
+      "path": "/warehouses",
+      "method": "GET"
+    },
+    "httpResponseTemplate": {
+      "template": "return { statusCode: 200, headers: { 'Content-Type': [\"application/json; charset=utf-8\"] }, body: JSON.stringify({warehouseId: request.queryStringParameters['productId'][0], name: \"Warehouse \" + request.queryStringParameters['productId'][0].repeat(5), locationId: request.queryStringParameters['productId'][0].repeat(3)  }) };",
+      "templateType": "JAVASCRIPT",
+      "delay": {"timeUnit": "MILLISECONDS", "value": 60}
+    }
+  },
+  {
+    "priority":0,
+    "httpRequest": {
+      "path": "/locations",
+      "method": "GET"
+    },
+    "httpResponseTemplate": {
+      "template": "return { statusCode: 200, headers: { 'Content-Type': [\"application/json; charset=utf-8\"] }, body: JSON.stringify({stockCount: request.queryStringParameters['productId'][0] + request.queryStringParameters['locationId'][0]  }) };",
+      "templateType": "JAVASCRIPT",
+      "delay": {"timeUnit": "MILLISECONDS", "value": 60}
+    }
+  },
+  {
+    "priority":0,
+    "httpRequest": {
+      "path": "/reviews",
+      "method": "GET"
+    },
+    "httpResponseTemplate": {
+      "template": "return { statusCode: 200, headers: { 'Content-Type': [\"application/json; charset=utf-8\"] }, body: JSON.stringify([{descr: \"Product \" + request.queryStringParameters['productId'][0] + \" is bad\", stars: \"1\" },{descr: \"Product \" + request.queryStringParameters['productId'][0] + \" is ok\", stars: \"3\" }]) };",
+      "templateType": "JAVASCRIPT",
+      "delay": {"timeUnit": "MILLISECONDS", "value": 60}
+    }
+  }
+]
