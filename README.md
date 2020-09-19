@@ -26,3 +26,19 @@ Steps:
 4. Go to http://localhost:8080/productsv2
 5. Compare duration in logs with duration of productsv1 call
 6. Make it even faster!! 
+
+Starting tips
+1. Changing call to ComputableFuture
+  private CompletableFuture<RemoteProductPrices> getProductPrice(String productId) {
+    return CompletableFuture.supplyAsync(() -> {
+      return restTemplate.getForObject("/prices?productId=" + productId, RemoteProductPrices.class);
+    });
+  }
+
+2. Handling exceptions
+    .exceptionally
+    
+3. Use result of ComputalbleFuture or create something new
+    .thenApply "map" or .thenCompose "flatMap" 
+    
+4. Maybe consider using parallelStream    
