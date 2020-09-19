@@ -29,11 +29,13 @@ Steps:
 
 Starting tips
 1. Changing call to ComputableFuture
-  private CompletableFuture<RemoteProductPrices> getProductPrice(String productId) {
-    return CompletableFuture.supplyAsync(() -> {
-      return restTemplate.getForObject("/prices?productId=" + productId, RemoteProductPrices.class);
-    });
-  }
+```
+private CompletableFuture<RemoteProductPrices> getProductPrice(String productId) {
+   return CompletableFuture.supplyAsync(() -> {
+       return restTemplate.getForObject("/prices?productId=" + productId, RemoteProductPrices.class);
+   });
+}
+```
 
 2. Handling exceptions
     .exceptionally
