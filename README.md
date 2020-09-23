@@ -54,7 +54,8 @@ private CompletableFuture<RemoteProductPrices> getProductPrice(String productId)
     myExcutor.setThreadNamePrefix("MyCustomPool-");
     myExcutor.initialize();
 ```
-more info: 
+more info:
+
 https://howtodoinjava.com/java/multi-threading/java-thread-pool-executor-example/
 
 https://dzone.com/articles/be-aware-of-forkjoinpoolcommonpool
