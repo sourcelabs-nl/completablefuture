@@ -44,3 +44,18 @@ private CompletableFuture<RemoteProductPrices> getProductPrice(String productId)
     .thenApply "map" or .thenCompose "flatMap" 
     
 4. Maybe consider using parallelStream    
+
+5. User custom thread pool for execution, tweak values for more performance
+```
+    ThreadPoolTaskExecutor myExcutor = new ThreadPoolTaskExecutor();
+    myExcutor.setCorePoolSize(2);
+    myExcutor.setMaxPoolSize(2);
+    myExcutor.setQueueCapacity(500);
+    myExcutor.setThreadNamePrefix("MyCustomPool-");
+    myExcutor.initialize();
+```
+more info: 
+https://howtodoinjava.com/java/multi-threading/java-thread-pool-executor-example/
+https://dzone.com/articles/be-aware-of-forkjoinpoolcommonpool
+
+6. Monitor threads by looking at spring boot metrics actuator.  Add management.endpoints.web.exposure.include: '*' to application.yml
