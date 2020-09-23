@@ -56,6 +56,7 @@ private CompletableFuture<RemoteProductPrices> getProductPrice(String productId)
 ```
 more info: 
 https://howtodoinjava.com/java/multi-threading/java-thread-pool-executor-example/
+
 https://dzone.com/articles/be-aware-of-forkjoinpoolcommonpool
 
 6. Monitor threads by looking at spring boot metrics actuator.  Add management.endpoints.web.exposure.include: '*' to application.yml
