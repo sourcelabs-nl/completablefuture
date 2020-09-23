@@ -61,3 +61,5 @@ https://howtodoinjava.com/java/multi-threading/java-thread-pool-executor-example
 https://dzone.com/articles/be-aware-of-forkjoinpoolcommonpool
 
 6. Monitor threads by looking at spring boot metrics actuator.  Add management.endpoints.web.exposure.include: '*' to application.yml
+
+7. Extend metrics for custom thread pools https://www.programmersought.com/article/43421746165/
