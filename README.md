@@ -43,7 +43,7 @@ private CompletableFuture<RemoteProductPrices> getProductPrice(String productId)
 3. Use result of ComputalbleFuture or create something new
     .thenApply "map" or .thenCompose "flatMap"   
 
-5. User custom thread pool for execution, tweak values for more performance
+4. User custom thread pool for execution, tweak values for more performance
 ```
     ThreadPoolTaskExecutor myExcutor = new ThreadPoolTaskExecutor();
     myExcutor.setCorePoolSize(2);
@@ -58,12 +58,36 @@ https://howtodoinjava.com/java/multi-threading/java-thread-pool-executor-example
 
 https://dzone.com/articles/be-aware-of-forkjoinpoolcommonpool
 
-6. Monitor threads by looking at spring boot metrics actuator.  Add management.endpoints.web.exposure.include: '*' to application.yml and create metric for your pool as in example below
+5. Monitor threads by looking at spring boot metrics actuator.  Add management.endpoints.web.exposure.include: '*' to application.yml and create metric for your pool as in example below
 
 ```
   @Bean
   public ExecutorService myExecutor(final MeterRegistry registry) {
     return ExecutorServiceMetrics
         .monitor(registry, Executors.newFixedThreadPool(10), "myExecutorPool");
+  }
+```
+
+6. Configure HttpClient for your rest templates
+```
+  @Bean
+  public HttpClient myHttpClient(MyProps properties) {
+    HttpClientBuilder httpClientBuilder = HttpClientBuilder.create()
+        .setDefaultRequestConfig(
+            RequestConfig.custom()
+                .setConnectTimeout(Math.toIntExact(properties.getConnectionTimeout().toMillis()))
+                .setSocketTimeout(Math.toIntExact(properties.getReadTimeout().toMillis()))
+                .build())
+        .setMaxConnTotal(100)
+        .setMaxConnPerRoute(50);
+    return httpClientBuilder.build();
+  }
+
+  @Bean
+  RestTemplate myTemplate(RestTemplateBuilder builder, MyProps properties) {
+    return builder
+        .requestFactory(() -> new HttpComponentsClientHttpRequestFactory(myHttpClient(properties)))
+        .rootUri(properties.getRootUri())
+        .build();
   }
 ```  
