@@ -41,9 +41,7 @@ private CompletableFuture<RemoteProductPrices> getProductPrice(String productId)
     .exceptionally
     
 3. Use result of ComputalbleFuture or create something new
-    .thenApply "map" or .thenCompose "flatMap" 
-    
-4. Maybe consider using parallelStream    
+    .thenApply "map" or .thenCompose "flatMap"   
 
 5. User custom thread pool for execution, tweak values for more performance
 ```
@@ -60,6 +58,12 @@ https://howtodoinjava.com/java/multi-threading/java-thread-pool-executor-example
 
 https://dzone.com/articles/be-aware-of-forkjoinpoolcommonpool
 
-6. Monitor threads by looking at spring boot metrics actuator.  Add management.endpoints.web.exposure.include: '*' to application.yml
+6. Monitor threads by looking at spring boot metrics actuator.  Add management.endpoints.web.exposure.include: '*' to application.yml and create metric for your pool as in example below
 
-7. Extend metrics for custom thread pools https://www.programmersought.com/article/43421746165/
+```
+  @Bean
+  public ExecutorService myExecutor(final MeterRegistry registry) {
+    return ExecutorServiceMetrics
+        .monitor(registry, Executors.newFixedThreadPool(10), "myExecutorPool");
+  }
+```  
