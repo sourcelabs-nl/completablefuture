@@ -90,4 +90,10 @@ https://dzone.com/articles/be-aware-of-forkjoinpoolcommonpool
         .rootUri(properties.getRootUri())
         .build();
   }
-```  
+```
+
+7. Wait for many to complete
+
+```
+CompletableFuture.allOf(futures.toArray(new CompletableFuture[futures.size()]))
+```
