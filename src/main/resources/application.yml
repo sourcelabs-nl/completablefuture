@@ -1,3 +1,7 @@
 
 logging.level:
   nl.sourcelabs.demos.cf: info
+
+spring:
+  jackson:
+    default-property-inclusion: non_null
